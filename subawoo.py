@@ -39,6 +39,7 @@ class subawoo:
         self.car_data = json.loads(item["Item"]["known_data"])
 
     def init(self):
+        self.car_data = {}
         self.ddb = boto3.resource("dynamodb").Table("subawoo")
         self.ctrl = Controller(
             ClientSession(),
@@ -132,5 +133,6 @@ async def goCarGo(cmd="std"):
 
 def handler(event, context):
     cmd = event.get("queryStringParameters", {}).get("cmd", "std")
+    LOOP.run_until_complete(goCarGo(cmd))
     return s.car_data
 
