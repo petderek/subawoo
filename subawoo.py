@@ -7,9 +7,6 @@ import asyncio
 import json
 import boto3
 
-print("creating loop")
-LOOP = asyncio.get_event_loop()
-print("created loop")
 
 class subawoo:
     ctrl: Controller
@@ -22,6 +19,7 @@ class subawoo:
     def get_remote_config(self):
         param = boto3.client("ssm").get_parameter(Name="subawoo", WithDecryption=True)
         self.config = json.loads(param["Parameter"]["Value"])
+        print("fetched remote config")
 
     def sync_to_ddb(self):
         self.ddb.put_item(Item={
@@ -94,14 +92,12 @@ class subawoo:
             return "0"
         return "%0.1f" % round(235.215 / liters, 1)
 
+
 # persistent state between lambda calls
-print("starting")
+LOOP = asyncio.get_event_loop()
 s = subawoo()
-print("made subawoo object")
 s.get_remote_config()
-print("got remote config")
 s.init()
-print("init complete")
 last_ddb = 0
 
 
@@ -114,16 +110,15 @@ async def goCarGo(cmd="std"):
     deltaSeconds = abs(int(time.time()) - last_ddb)
     if "ddb" == cmd or deltaSeconds > 60:
         s.sync_from_ddb()
-    # hourly fetch from subaru api
-    # {"odometer": "8708.5", "gasMiles": "259.7", "evMiles": "0", "fuel": "42.0", "syncAt": 1694893398, "fetchAt": 1695240738}
+    # hourly fetch from subaru api. not more often than every 5 minutes
     deltaSeconds = abs(int(time.time()) - s.car_data.get("fetchAt", 0))
-    if "fetch" == cmd or deltaSeconds > 60 * 60:
+    if (deltaSeconds > 60 * 60 * 5) and ("fetch" == cmd or deltaSeconds > 60 * 60):
         await s.fetch()
         updated = True
 
-    # 6-hourly fetch from car
+    # 12-hourly fetch from car. not more often than every 6 hours.
     deltaSeconds = abs(int(time.time()) - s.car_data.get("syncAt", 0))
-    if "update" == cmd or deltaSeconds > 60 * 60 * 6:
+    if (deltaSeconds > 60 * 60 * 6) and ("update" == cmd or deltaSeconds > 60 * 60 * 12):
         await s.deep_fetch()
         updated = True
 
@@ -135,4 +130,3 @@ def handler(event, context):
     cmd = event.get("queryStringParameters", {}).get("cmd", "std")
     LOOP.run_until_complete(goCarGo(cmd))
     return s.car_data
-

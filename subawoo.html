@@ -1,0 +1,132 @@
+<html lang='en'>
+<head>
+<title>Subawoo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+	background-color: #ccc;
+}
+.outer-content {
+	max-width: 45ch;
+	max-height: 63ch;
+margin: auto;
+	background-color: transparent;
+perspective: 1000px;
+	     aspect-ratio: 1077/1490;
+color: black;
+}
+
+.inner-content {
+	background-color: transparent;
+position: relative;
+	  max-width: 45ch;
+	  max-height: 63ch;
+width: 100%;
+height: 100%;
+	aspect-ratio: 1077/1490;
+
+	text-align: center;
+transition: transform 0.8s;
+	    transform-style: preserve-3d;
+}
+
+.outer-content-flip .inner-content {
+transform: rotateY(180deg);
+}
+
+.content-front, .content-back {
+	background-color: transparent;
+position: absolute;
+width: 100%;
+height: 100%;
+	-webkit-backface-visibility: hidden; /* Safari */
+	backface-visibility: hidden;
+}
+
+.content-front {
+	aspect-ratio: 1077/1490;
+
+	background-color: transparent;
+	background-image: url("front.png");
+	background-attachment: local;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.content-back {
+	aspect-ratio: 1077/1490;
+
+	background-color: transparent;
+	background-image: url("back.png");
+	background-repeat: no-repeat;
+	background-attachment: local;
+	background-size: cover;
+transform: rotateY(180deg);
+	   font-family: sans-serif;
+} 
+
+#mpg {
+position: absolute;
+	  margin-top: 6%;
+	  margin-left: 70%;
+}
+
+#odometer {
+position: absolute;
+	  margin-top: 6%;
+	  margin-left: 20%;
+}
+
+#miles {
+position: absolute;
+	  margin-top: 81%;
+	  margin-left: 17%;
+}
+
+#ev {
+position: absolute;
+	  margin-top: 102%;
+	  margin-left: 22%;
+}
+
+</style>
+<script type='text/javascript'>
+const FLIP = "outer-content-flip";
+
+function toggleFlip() {
+	var element = document.querySelector("#content");
+	if(element.classList.contains(FLIP)) {
+		element.classList.remove(FLIP);
+	} else {
+		element.classList.add(FLIP);
+	}
+
+}
+</script>
+</head>
+<body>
+<div  id="content" class="outer-content" onclick="toggleFlip()">
+<div class="inner-content">
+<div class="content-front">
+</div>
+<div class="content-back">
+<div id="odometer">x</div>
+<div id="mpg">xx</div>
+<div id="miles">xx</div>
+<div id="ev">xx</div>
+</div>
+</div>
+</div> 
+</body>
+<script type='text/javascript'>
+	fetch("/api")
+.then((x) => x.json())
+	.then((x) => {
+			document.querySelector("#odometer").innerHTML = "Subawoo! (" + x.odometer + " mi)";
+			document.querySelector("#mpg").innerHTML = x.fuel + " mpg";
+			document.querySelector("#miles").innerHTML = x.gasMiles + " miles of gas remaining";
+			document.querySelector("#ev").innerHTML = x.evMiles + " miles of ev remaining";
+			})
+.then(() => document.querySelector("#content").classList.add(FLIP));
+</script>
+</html>
