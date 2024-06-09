@@ -65,7 +65,7 @@ class subawoo:
         self.car_data = {
             "odometer": self.km_to_miles(self.raw_data["vehicle_status"]["ODOMETER"]),
             "gasMiles": self.km_to_miles(self.raw_data["vehicle_status"]["DISTANCE_TO_EMPTY_FUEL"]),
-            "evMiles": self.raw_data["vehicle_status"]["EV_DISTANCE_TO_EMPTY"],
+            "evMiles": self.raw_data["vehicle_status"]["EV_DISTANCE_TO_EMPTY"] or 0,
             "fuel": self.mpg(self.raw_data["vehicle_status"]["AVG_FUEL_CONSUMPTION"]),
             "syncAt": self.to_utc(self.raw_data["vehicle_status"]["TIMESTAMP"]),
             "fetchAt": self.to_utc(self.raw_data["last_fetch"]),
