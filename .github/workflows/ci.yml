@@ -42,4 +42,4 @@ jobs:
 
     - name: Deploy the image to lambda
       run: |
-        aws lambda update-function-code --function-name subawoo --image-uri ${{ steps.login-ecr.outputs.registry }}/subawoo/${{ github.sha }}
+        aws lambda update-function-code --function-name subawoo --image-uri ${{ steps.login-ecr.outputs.registry }}/subawoo:${{ github.sha }}
