@@ -112,7 +112,7 @@ async def goCarGo(cmd="std"):
         s.sync_from_ddb()
     # hourly fetch from subaru api. not more often than every 5 minutes
     deltaSeconds = abs(int(time.time()) - s.car_data.get("fetchAt", 0))
-    if (deltaSeconds > 60 * 60 * 5) and ("fetch" == cmd or deltaSeconds > 60 * 60):
+    if (deltaSeconds > 60 * 5) and ("fetch" == cmd or deltaSeconds > 60 * 60):
         await s.fetch()
         updated = True
 
