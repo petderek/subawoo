@@ -87,10 +87,10 @@ class subawoo:
             return "0"
         return "%0.1f" % (float(meters or 0) * 0.62137119)
 
-    def mpg(self, liters: float) -> str:
-        if liters == 0 or liters is None:
+    def mpg(self, milesPerGallon: float) -> str:
+        if milesPerGallon == 0 or milesPerGallon is None:
             return "0"
-        return "%0.1f" % round(235.215 / liters, 1)
+        return "%0.1f" % round(milesPerGallon, 1)
 
 
 # persistent state between lambda calls
