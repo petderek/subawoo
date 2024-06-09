@@ -65,7 +65,7 @@ class subawoo:
         self.car_data = {
             "odometer": self.km_to_miles(self.raw_data["vehicle_status"]["ODOMETER"]),
             "gasMiles": self.km_to_miles(self.raw_data["vehicle_status"]["DISTANCE_TO_EMPTY_FUEL"]),
-            "evMiles": self.raw_data["vehicle_status"]["EV_DISTANCE_TO_EMPTY"] or 0,
+            "evMiles": self.mpg(self.raw_data["vehicle_status"]["EV_DISTANCE_TO_EMPTY"]),
             "fuel": self.mpg(self.raw_data["vehicle_status"]["AVG_FUEL_CONSUMPTION"]),
             "syncAt": self.to_utc(self.raw_data["vehicle_status"]["TIMESTAMP"]),
             "fetchAt": self.to_utc(self.raw_data["last_fetch"]),
@@ -87,10 +87,10 @@ class subawoo:
             return "0"
         return "%0.1f" % (float(meters or 0) * 0.62137119)
 
-    def mpg(self, milesPerGallon: float) -> str:
-        if milesPerGallon == 0 or milesPerGallon is None:
+    def mpg(self, data: float) -> str:
+        if data == 0 or data is None:
             return "0"
-        return "%0.1f" % round(milesPerGallon, 1)
+        return "%0.1f" % round(data, 1)
 
 
 # persistent state between lambda calls
