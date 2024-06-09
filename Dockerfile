@@ -1,5 +1,5 @@
 FROM public.ecr.aws/lambda/python
-RUN dnf install -y awscli
-RUN pip3 install subarulink
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
 ADD subawoo.py ./
 CMD ["subawoo.handler"]
