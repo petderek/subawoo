@@ -14,5 +14,5 @@ simplejson==3.17.2
 six==1.16.0
 stdiomask==0.0.6
 subarulink==0.7.11
-urllib3==1.26.18
+urllib3==2.2.1
 yarl==1.9.4
