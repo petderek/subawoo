@@ -63,8 +63,8 @@ class subawoo:
         await self.ctrl.fetch(self.car, force=True)
         self.raw_data = await self.ctrl.get_data(self.car)
         self.car_data = {
-            "odometer": self.km_to_miles(self.raw_data["vehicle_status"]["ODOMETER"]),
-            "gasMiles": self.km_to_miles(self.raw_data["vehicle_status"]["DISTANCE_TO_EMPTY_FUEL"]),
+            "odometer": self.mpg(self.raw_data["vehicle_status"]["ODOMETER"]),
+            "gasMiles": self.mpg(self.raw_data["vehicle_status"]["DISTANCE_TO_EMPTY_FUEL"]),
             "evMiles": self.mpg(self.raw_data["vehicle_status"]["EV_DISTANCE_TO_EMPTY"]),
             "fuel": self.mpg(self.raw_data["vehicle_status"]["AVG_FUEL_CONSUMPTION"]),
             "syncAt": self.to_utc(self.raw_data["vehicle_status"]["TIMESTAMP"]),
