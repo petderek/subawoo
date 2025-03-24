@@ -1,3 +1,3 @@
 boto3==1.37.13
-botocore==1.37.13
+botocore==1.37.18
 subarulink==0.7.13
