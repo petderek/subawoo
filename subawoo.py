@@ -94,6 +94,7 @@ class subawoo:
 
 
 # persistent state between lambda calls
+LOOP = asyncio.new_event_loop()
 s = subawoo()
 s.get_remote_config()
 s.init()
@@ -127,5 +128,5 @@ async def goCarGo(cmd="std"):
 
 def handler(event, context):
     cmd = event.get("queryStringParameters", {}).get("cmd", "std")
-    asyncio.run(goCarGo(cmd))
+    LOOP.run_until_complete(goCarGo(cmd))
     return s.car_data
