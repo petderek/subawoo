@@ -97,7 +97,7 @@ class subawoo:
 LOOP = asyncio.new_event_loop()
 s = subawoo()
 s.get_remote_config()
-s.init()
+LOOP.run_until_complete(s.init())
 last_ddb = 0
 
 
