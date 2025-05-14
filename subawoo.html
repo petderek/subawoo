@@ -120,13 +120,13 @@ function toggleFlip() {
 </body>
 <script type='text/javascript'>
 	fetch("/api")
-.then((x) => x.json())
-	.then((x) => {
+		.then((x) => x.json())
+		.then((x) => {
 			document.querySelector("#odometer").innerHTML = "Subawoo! (" + x.odometer + " mi)";
 			document.querySelector("#mpg").innerHTML = x.fuel + " mpg";
 			document.querySelector("#miles").innerHTML = x.gasMiles + " miles of gas remaining";
 			document.querySelector("#ev").innerHTML = x.evMiles + " miles of ev remaining";
 			})
-.then(() => document.querySelector("#content").classList.add(FLIP));
+		.then(() => document.querySelector("#content").classList.add(FLIP));
 </script>
 </html>
